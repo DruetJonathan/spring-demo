@@ -2,9 +2,15 @@ package be.technifutur.springdemo.controller;
 
 import be.technifutur.springdemo.service.MessageService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 
 @RestController
 
@@ -34,8 +40,11 @@ public class DemoController {
         this.messageService.changeMessage(index,message);
     }
     @GetMapping("/message/last")
-    public String getLastMessage(){
-        return this.messageService.getLastMessage();
+    public ResponseEntity<String> getLastMessage(){
+        return ResponseEntity
+                .status(HttpStatus.I_AM_A_TEAPOT)
+                .header("headerName","value1")
+                .body(messageService.getLastMessage());
     }
     @PostMapping({"/message","/message/add"})
     public void addMessage(@RequestBody String message){
@@ -48,5 +57,10 @@ public class DemoController {
     @GetMapping("/message/all")
     public List<String> getMessages(){
         return this.messageService.getAllMessage();
+    }
+
+    @RequestMapping(method = HEAD,path = "/test/Header")
+    public void testGest(@RequestHeader String testHeader){
+        System.out.println(testHeader);
     }
 }
