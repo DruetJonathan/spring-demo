@@ -1,0 +1,16 @@
+package be.technifutur.springdemo.other;
+
+import org.springframework.stereotype.Component;
+
+import java.util.Scanner;
+
+@Component
+public class DemoCDI {
+    private final DemoIOC dependance;
+    private final Scanner scanner;
+    public DemoCDI(DemoIOC dependance, Scanner scanner) {
+        this.dependance = dependance;
+        this.scanner = scanner;
+        System.out.println("Instanciation de DemoCDI. Dependence"+ dependance);
+    }
+}
