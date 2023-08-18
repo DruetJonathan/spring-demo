@@ -25,20 +25,20 @@ public class DemoController {
     public Integer add(@RequestParam("membreA") int a, @RequestParam("membreB") int b){
         return a+b;
     }
-    @GetMapping("/message")
-    public String getMessage(){
-        return message;
+    @GetMapping("/message/{index:[0-9]+]}")
+    public String getMessage(@PathVariable int index){
+        return this.messageService.getMessage(index);
     }
-    @PutMapping("/message")
-    public void changeMessage(@RequestBody String message){
-        this.message = message;
+    @PutMapping("/message/{index:[0-9]+}")
+    public void changeMessage(@RequestBody String message, @PathVariable int index){
+        this.messageService.changeMessage(index,message);
     }
     @GetMapping("/message/last")
     public String getLastMessage(){
         return this.messageService.getLastMessage();
     }
     @PostMapping({"/message","/message/add"})
-    public void addMessage(String message){
+    public void addMessage(@RequestBody String message){
         this.messageService.addMessage(message);
     }
     @DeleteMapping("/message/{index:[0-9]+}")
