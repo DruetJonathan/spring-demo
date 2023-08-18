@@ -15,7 +15,7 @@ public class JeuVideo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection(targetClass = Plateform.class)
+    @ElementCollection(targetClass = Genre.class)
     @Enumerated(EnumType.STRING)
     List<Genre> genre;
 

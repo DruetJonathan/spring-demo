@@ -9,7 +9,7 @@ import java.util.List;
 public interface JeuVideoService {
     void addJeuVideo(JeuVideo jeuVideo);
 
-    void deleteJeuVideo(JeuVideo jeuVideo);
+    void deleteJeuVideo(Long id);
     JeuVideo getById(Long id);
     List<JeuVideo> getAll();
     void modify(JeuVideo jeuVideo);

@@ -18,13 +18,13 @@ public class JeuVideoController {
     }
 
     @PostMapping("/jeuVideo/add")
-    public ResponseEntity add(@RequestBody JeuVideo jeuVideo){
+    public ResponseEntity<?> add(@RequestBody JeuVideo jeuVideo){
         this.jeuVideoService.addJeuVideo(jeuVideo);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @DeleteMapping("/jeuVideo/delete/{id:[0-9]+}")
-    public ResponseEntity delete(@RequestBody JeuVideo jeuVideo,@PathVariable Long id){
-        this.jeuVideoService.deleteJeuVideo(jeuVideo);
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        this.jeuVideoService.deleteJeuVideo(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

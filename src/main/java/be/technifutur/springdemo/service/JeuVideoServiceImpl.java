@@ -21,8 +21,8 @@ public class JeuVideoServiceImpl implements JeuVideoService {
     }
 
     @Override
-    public void deleteJeuVideo(JeuVideo jeuVideo) {
-        this.jeuVideoRepository.delete(jeuVideo);
+    public void deleteJeuVideo(Long id) {
+        this.jeuVideoRepository.deleteById(id);
     }
 
     @Override
