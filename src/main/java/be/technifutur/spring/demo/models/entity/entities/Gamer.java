@@ -26,7 +26,7 @@ public class Gamer {
     private String password;
     private LocalDate Birthdate;
     private Boolean actif;
-    @ManyToMany(mappedBy = "gamers")
+    @ManyToMany()
     private Set<Game> games = new HashSet<>();
 
     @ManyToOne()
