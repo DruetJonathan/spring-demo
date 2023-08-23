@@ -1,11 +1,11 @@
 package be.technifutur.spring.demo.models.form;
 
-import be.technifutur.spring.demo.models.entity.enums.Platform;
+import be.technifutur.spring.demo.models.entity.Platform;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class GamePlatformsForm {
-    private List<Platform> platforms;
+    private Set<Platform> platforms;
 }

@@ -1,106 +1,74 @@
 package be.technifutur.spring.demo.service.impl;
 
-import be.technifutur.spring.demo.exceptions.ResourceNotFound2Exception;
-import be.technifutur.spring.demo.models.entity.entities.Game;
-import be.technifutur.spring.demo.models.entity.enums.Genre;
-import be.technifutur.spring.demo.models.entity.enums.Platform;
+import be.technifutur.spring.demo.exceptions.ResourceNotFoundException;
+import be.technifutur.spring.demo.models.entity.Game;
+import be.technifutur.spring.demo.models.entity.Platform;
+import be.technifutur.spring.demo.repository.GameRepository;
 import be.technifutur.spring.demo.service.GameService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    private static long nextId = 1;
-    private final List<Game> games = new ArrayList<>(
-            List.of(
-                    new Game(nextId++, "YannickOP", List.of(Genre.FPS), LocalDate.of(2023, 9, 29), "Studio88", 69.69, List.of(Platform.PS, Platform.PC, Platform.XBOX)),
-                    new Game(nextId++, "World of Warcraft", List.of(Genre.MMO, Genre.RPG), LocalDate.of(2003, 1,1), "Blizzard", 10000000., List.of(Platform.PC))
-            )
-    );
+    private final GameRepository gameRepository;
 
+    public GameServiceImpl(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+    }
 
     @Override
     public long addGame(Game game) {
-        if( game == null )
-            throw new IllegalArgumentException("game can't be null");
-
-        game.setId( nextId++ );
-        games.add( game );
+        game = gameRepository.save( game );
         return game.getId();
     }
 
     @Override
     public Game removeGame(long id) {
-        Game game = getGame(id);
-        games.remove(game);
+        Game game = getGame( id );
+        gameRepository.delete( game );
         return game;
     }
 
     @Override
     public Game getGame(long id) {
-        return games.stream()
-                .filter( game -> game.getId() == id )
-                .findAny()
-                .orElseThrow( () -> new ResourceNotFound2Exception(id, Game.class));
+        return gameRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id, Game.class));
     }
 
     @Override
     public List<Game> getAllGames(Double minPrice, Double maxPrice) {
-        return games.stream()
-                .filter( game -> minPrice == null || game.getPrice() >= minPrice )
-                .filter( game -> maxPrice == null || game.getPrice() <= maxPrice )
+        return gameRepository.findAll().stream()
+                .filter(game -> minPrice == null || game.getPrice() >= minPrice)
+                .filter(game -> maxPrice == null || game.getPrice() <= maxPrice)
                 .toList();
     }
 
     @Override
     public Game updateGame(long id, Game game) {
-
-        if( game == null )
-            throw new IllegalArgumentException("game can't be null");
-
-        Game toUpdate = getGame(id);
-
-        toUpdate.setName(game.getName() );
-        toUpdate.setGenres(game.getGenres());
-        toUpdate.setPrice(game.getPrice());
-        toUpdate.setPlatforms(game.getPlatforms());
-        toUpdate.setStudioName(game.getStudioName());
-        toUpdate.setReleaseDate(game.getReleaseDate());
-
-        return toUpdate;
-
+        game.setId(id);
+        return gameRepository.save( game );
     }
 
     @Override
     public Game updatePrice(long id, double price) {
         if( price < 0 )
-            throw new IllegalArgumentException("price should be 0 or positive");
+            throw new IllegalArgumentException("price should be positive or 0");
 
-        Game toUpdate = getGame(id);
-
-        toUpdate.setPrice(price);
-
-        return toUpdate;
+        Game game = getGame(id);
+        game.setPrice( price );
+        return gameRepository.save( game );
     }
 
     @Override
-    public Game addPlatform(long id, List<Platform> platforms) {
-        if( platforms == null )
-            throw new IllegalArgumentException("platform should not be null");
+    public Game addPlatform(long id, Set<Platform> platforms) {
+        Assert.notNull(platforms, "platforms shoud not be null");
 
         Game game = getGame(id);
-
-        game.getPlatforms().addAll(
-                platforms.stream()
-                        .distinct()
-                        .filter( platform -> !game.getPlatforms().contains(platform) )
-                        .toList()
-        );
-
-        return game;
+        game.getPlatforms().addAll(platforms); // TODO pas ajouter une plateforme existante
+        return gameRepository.save( game );
     }
 }
