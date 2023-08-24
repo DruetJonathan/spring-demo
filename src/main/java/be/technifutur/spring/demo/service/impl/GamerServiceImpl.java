@@ -7,9 +7,12 @@ import be.technifutur.spring.demo.models.entity.Platform;
 import be.technifutur.spring.demo.repository.GamerRepository;
 import be.technifutur.spring.demo.service.GameService;
 import be.technifutur.spring.demo.service.GamerService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+
+@Service
 
 public class GamerServiceImpl implements GamerService {
     private final GamerRepository gamerRepository;
