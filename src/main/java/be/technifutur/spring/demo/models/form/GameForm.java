@@ -4,10 +4,7 @@ import be.technifutur.spring.demo.validation.contraints.Exclude;
 import be.technifutur.spring.demo.models.entity.Game;
 import be.technifutur.spring.demo.models.entity.Genre;
 import be.technifutur.spring.demo.models.entity.Platform;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -16,20 +13,20 @@ import java.util.Set;
 @Data
 public class GameForm {
 
-    @NotBlank
+    @NotNull
     @Size(min = 5)
     private String name;
     @Exclude(value = {Genre.RTS,Genre.FPS})
     private Set<Genre> genres;
-    @NotBlank
+    @NotNull
     @Past
     private LocalDate releaseDate;
-    @NotBlank
+    @NotNull
     private Long studioId;
-    @NotBlank
+    @NotNull
     @PositiveOrZero
-    private double price;
-    @NotBlank
+    private Double price;
+    @NotNull
 
     private Set<Platform> platforms;
 
