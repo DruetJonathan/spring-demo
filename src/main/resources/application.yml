@@ -5,9 +5,13 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
-    show-sql: on
+    show-sql: true
+    hibernate:
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
-    hibernate:
-      ddl-auto: update
+
+springdoc:
+  swagger-ui:
+    path: /swagger
