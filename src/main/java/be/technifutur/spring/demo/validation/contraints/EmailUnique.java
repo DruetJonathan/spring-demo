@@ -1,7 +1,6 @@
 package be.technifutur.spring.demo.validation.contraints;
 
 import be.technifutur.spring.demo.validation.validators.EmailUniqueValidator;
-import be.technifutur.spring.demo.validation.validators.ExcludeValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -12,14 +11,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ExcludeValidator.class)
-public @interface Exclude {
-    String message() default "using forbidden values";
+@Constraint(validatedBy = EmailUniqueValidator.class)
+public @interface EmailUnique {
+    String message() default "email already used";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
-
-    Class<? extends Enum<?>> enumClazz();
-    String[] values();
-
 }

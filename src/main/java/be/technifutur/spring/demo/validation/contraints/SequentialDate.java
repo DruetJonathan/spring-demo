@@ -1,7 +1,6 @@
 package be.technifutur.spring.demo.validation.contraints;
 
-import be.technifutur.spring.demo.validation.validators.EmailUniqueValidator;
-import be.technifutur.spring.demo.validation.validators.ExcludeValidator;
+import be.technifutur.spring.demo.validation.validators.SuccessiveDateValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -10,16 +9,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ExcludeValidator.class)
-public @interface Exclude {
-    String message() default "using forbidden values";
+@Target(ElementType.TYPE)
+@Constraint(validatedBy = SuccessiveDateValidator.class)
+public @interface SuccessiveDate {
+    String message() default "The date should be sequential";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
-
-    Class<? extends Enum<?>> enumClazz();
-    String[] values();
-
 }

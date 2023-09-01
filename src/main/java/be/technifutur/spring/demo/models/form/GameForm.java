@@ -1,22 +1,25 @@
 package be.technifutur.spring.demo.models.form;
 
-import be.technifutur.spring.demo.validation.contraints.Exclude;
 import be.technifutur.spring.demo.models.entity.Game;
 import be.technifutur.spring.demo.models.entity.Genre;
 import be.technifutur.spring.demo.models.entity.Platform;
+import be.technifutur.spring.demo.validation.contraints.Exclude;
+import be.technifutur.spring.demo.validation.contraints.ExcludeGenre;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Data
 public class GameForm {
 
-    @NotNull
+    @NotBlank
     @Size(min = 5)
     private String name;
-    @Exclude(value = {Genre.RTS,Genre.FPS})
+    @Exclude(enumClazz = Genre.class, values = {"FPS", "RTS"})
+//    @ExcludeGenre(excluded = {Genre.FPS, Genre.RTS})
     private Set<Genre> genres;
     @NotNull
     @Past
@@ -26,8 +29,8 @@ public class GameForm {
     @NotNull
     @PositiveOrZero
     private Double price;
-    @NotNull
-
+    @Size(min = 1)
+    @Exclude(enumClazz = Platform.class, values = {"PC", "SWITCH"})
     private Set<Platform> platforms;
 
 
