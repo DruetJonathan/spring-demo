@@ -1,4 +1,4 @@
-package be.technifutur.spring.demo.config;
+package be.technifutur.spring.demo.configs;
 
 import be.technifutur.spring.demo.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 UserDetails user = this.userDetailsService.loadUserByUsername(username);
 
                 if (this.util.isValid(token)) {
-                    UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(user, token, user.getAuthorities());
 
                     SecurityContextHolder.getContext().setAuthentication(upt);
                 }

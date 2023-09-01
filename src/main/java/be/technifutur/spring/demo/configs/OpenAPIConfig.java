@@ -1,4 +1,4 @@
-package be.technifutur.spring.demo.config;
+package be.technifutur.spring.demo.configs;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

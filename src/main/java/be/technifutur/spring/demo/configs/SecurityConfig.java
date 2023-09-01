@@ -1,4 +1,4 @@
-package be.technifutur.spring.demo.config;
+package be.technifutur.spring.demo.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +27,6 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(r -> {
                     r
-                            .requestMatchers("/login").permitAll()
-                            .requestMatchers("/register").permitAll()
                             .anyRequest().permitAll();
                 })
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

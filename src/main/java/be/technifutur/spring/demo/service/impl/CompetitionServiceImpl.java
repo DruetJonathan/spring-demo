@@ -10,6 +10,7 @@ import be.technifutur.spring.demo.repository.GameRepository;
 import be.technifutur.spring.demo.repository.GamerRepository;
 import be.technifutur.spring.demo.repository.ParticipationRepository;
 import be.technifutur.spring.demo.service.CompetitionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import static  be.technifutur.spring.demo.models.entity.Participation.ParticipationId;
 

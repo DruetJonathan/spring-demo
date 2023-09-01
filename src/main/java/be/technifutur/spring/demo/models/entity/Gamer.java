@@ -1,11 +1,12 @@
 package be.technifutur.spring.demo.models.entity;
 
-import be.technifutur.spring.demo.enums.Role;
+import be.technifutur.spring.demo.models.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,9 +43,13 @@ public class Gamer implements UserDetails {
     @Column(name = "gamer_active", nullable = false)
     private boolean active = true;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @Column(name = "role",nullable = false)
-    private Role role;
+    @CollectionTable(
+            name = "gamer_role",
+            joinColumns = @JoinColumn(name = "gamer_id")
+    )
+    private Set<Role> roles;
 
     @ManyToMany
     @JoinTable(
@@ -59,9 +64,12 @@ public class Gamer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.toString()));
+        return this.roles.stream()
+                .map(r -> new SimpleGrantedAuthority(r.toString()))
+                .toList();
     }
 
+    @Override
     public String getUsername() {
         return this.pseudo;
     }
@@ -83,7 +91,6 @@ public class Gamer implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return this.active;
     }
-
 }

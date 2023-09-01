@@ -12,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -23,10 +24,12 @@ public class GamerServiceImpl implements GamerService, UserDetailsService {
 
     private final GamerRepository gamerRepository;
     private final GameService gameService;
+    private final PasswordEncoder passwordEncoder;
 
-    public GamerServiceImpl(GamerRepository gamerRepository, GameService gameService) {
+    public GamerServiceImpl(GamerRepository gamerRepository, GameService gameService,PasswordEncoder passwordEncoder) {
         this.gamerRepository = gamerRepository;
         this.gameService = gameService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -116,12 +119,15 @@ public class GamerServiceImpl implements GamerService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return gamerRepository.getGamerByPseudo(username).orElseThrow();
     }
+
     @Override
-    public Gamer login(Gamer gamer) {
+    public Gamer login(Gamer gamer){
         Gamer existingGamer = gamerRepository.getGamerByPseudo(gamer.getPseudo()).orElseThrow();
-        if(!existingGamer.getPassword().equals(gamer.getPassword())){
-            throw new RuntimeException();
+
+        if(!passwordEncoder.matches(gamer.getPassword(), existingGamer.getPassword())){
+            throw new RuntimeException("Wrong password");
         }
+
         return existingGamer;
     }
 }
