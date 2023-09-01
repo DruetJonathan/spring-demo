@@ -25,6 +25,12 @@ public class Competition {
     @Column(name = "compet_name", nullable = false)
     private String name;
 
+    @Column(name = "min_player",nullable = false)
+    private int minPlayer;
+
+    @Column(name = "max_player",nullable = false)
+    private int maxPlayer;
+
     @Column(name = "compet_inscription_start", nullable = false)
     private LocalDate inscriptionStart;
 

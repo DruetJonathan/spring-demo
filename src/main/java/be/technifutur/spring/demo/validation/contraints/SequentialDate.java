@@ -1,6 +1,6 @@
 package be.technifutur.spring.demo.validation.contraints;
 
-import be.technifutur.spring.demo.validation.validators.SuccessiveDateValidator;
+import be.technifutur.spring.demo.validation.validators.SequentialDateValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Constraint(validatedBy = SuccessiveDateValidator.class)
-public @interface SuccessiveDate {
+@Constraint(validatedBy = SequentialDateValidator.class)
+public @interface SequentialDate {
     String message() default "The date should be sequential";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

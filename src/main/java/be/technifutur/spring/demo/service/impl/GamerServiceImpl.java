@@ -9,6 +9,9 @@ import be.technifutur.spring.demo.repository.GamerRepository;
 import be.technifutur.spring.demo.service.GameService;
 import be.technifutur.spring.demo.service.GamerService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class GamerServiceImpl implements GamerService {
+public class GamerServiceImpl implements GamerService, UserDetailsService {
 
     private final GamerRepository gamerRepository;
     private final GameService gameService;
@@ -109,4 +112,16 @@ public class GamerServiceImpl implements GamerService {
 //                .collect(Collectors.joining());
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return gamerRepository.getGamerByPseudo(username).orElseThrow();
+    }
+    @Override
+    public Gamer login(Gamer gamer) {
+        Gamer existingGamer = gamerRepository.getGamerByPseudo(gamer.getPseudo()).orElseThrow();
+        if(!existingGamer.getPassword().equals(gamer.getPassword())){
+            throw new RuntimeException();
+        }
+        return existingGamer;
+    }
 }
