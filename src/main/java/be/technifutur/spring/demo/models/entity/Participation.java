@@ -1,7 +1,10 @@
 package be.technifutur.spring.demo.models.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -31,11 +34,11 @@ public class Participation {
     @Getter @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @EqualsAndHashCode
     public static class ParticipationId implements Serializable {
 
         private Long gamerId;
         private Long competId;
 
     }
+
 }

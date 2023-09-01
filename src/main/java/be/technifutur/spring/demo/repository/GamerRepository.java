@@ -6,12 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface GamerRepository extends JpaRepository<Gamer, Long> {
 
     boolean existsByPseudo(String pseudo);
     boolean existsByEmail(String email);
 
-    Optional<Gamer> getGamerByPseudo(String pseudo);
 }
